@@ -65,7 +65,45 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+    }
+
+    function checkCollisions() {
+        // 判断是否碰撞
+        if (isCollision()) {
+            alert("You are eaten by a bug!");
+            init();
+        }
+
+        // 判断是否获胜
+        if (player.y <= 0) {
+            alert("You Win!");
+            init();
+        }
+    }
+
+    // 判断碰撞的方法
+    function isCollision() {
+        // 定义主角人物位置坐标，和判断结果数组
+        var left = player.x + 33,
+            right = player.x + 101 - 33,
+            top = player.y + 64,
+            bottom = player.y + 171 - 33,
+            centerX = player.x + 101 / 2,
+            centerY = (top + bottom) / 2;
+
+        // 遍历敌人，并根据敌人位置画出敌人的碰撞箱
+        ctx.beginPath();
+        allEnemies.forEach(function (enemy) {
+            var enemyLeft = enemy.x + 10,
+                enemyRight = enemy.x + 101 - 10,
+                enemyTop = enemy.y + 80,
+                enemyBottom = enemy.y + 171 -33;
+
+            ctx.rect(enemyLeft, enemyTop, enemyRight - enemyLeft, enemyBottom - enemyTop);
+        })
+        // 判断主角人物坐标是否在敌人碰撞箱内
+        return ctx.isPointInPath(left, top) || ctx.isPointInPath(right, top) || ctx.isPointInPath(centerX, centerY) || ctx.isPointInPath(left, bottom) || ctx.isPointInPath(right, bottom);
     }
 
     /* 这个函数会遍历在 app.js 定义的存放所有敌人实例的数组，并且调用他们的 update()
@@ -76,7 +114,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        player.update(0, 0);
     }
 
     /* 这个函数做了一些游戏的初始渲染，然后调用 renderEntities 函数。记住，这个函数
@@ -130,6 +168,8 @@ var Engine = (function(global) {
      */
     function reset() {
         // 空操作
+        player.x = 202;
+        player.y = 83 * 5 - 20;
     }
 
     /* 紧接着我们来加载我们知道的需要来绘制我们游戏关卡的图片。然后把 init 方法设置为回调函数。
@@ -140,7 +180,7 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-princess-girl.png'
     ]);
     Resources.onReady(init);
 
