@@ -9,7 +9,6 @@
  * 这个引擎是可以通过 Engine 变量公开访问的，而且它也让 canvas context (ctx) 对象也可以
  * 公开访问，以此使编写app.js的时候更加容易
  */
-
 var Engine = (function(global) {
     /* 实现定义我们会在这个作用于用到的变量
      * 创建 canvas 元素，拿到对应的 2D 上下文
@@ -94,11 +93,11 @@ var Engine = (function(global) {
 
         // 遍历敌人，并根据敌人位置画出敌人的碰撞箱
         ctx.beginPath();
-        allEnemies.forEach(function (enemy) {
+        allEnemies.forEach(function(enemy) {
             var enemyLeft = enemy.x + 10,
                 enemyRight = enemy.x + 101 - 10,
                 enemyTop = enemy.y + 80,
-                enemyBottom = enemy.y + 171 -33;
+                enemyBottom = enemy.y + 171 - 33;
 
             ctx.rect(enemyLeft, enemyTop, enemyRight - enemyLeft, enemyBottom - enemyTop);
         })
@@ -125,12 +124,12 @@ var Engine = (function(global) {
     function render() {
         /* 这个数组保存着游戏关卡的特有的行对应的图片相对路径。 */
         var rowImages = [
-                'images/water-block.png',   // 这一行是河。
-                'images/stone-block.png',   // 第一行石头
-                'images/stone-block.png',   // 第二行石头
-                'images/stone-block.png',   // 第三行石头
-                'images/grass-block.png',   // 第一行草地
-                'images/grass-block.png'    // 第二行草地
+                'images/water-block.png', // 这一行是河。
+                'images/stone-block.png', // 第一行石头
+                'images/stone-block.png', // 第二行石头
+                'images/stone-block.png', // 第三行石头
+                'images/grass-block.png', // 第一行草地
+                'images/grass-block.png' // 第二行草地
             ],
             numRows = 6,
             numCols = 5,
@@ -143,7 +142,7 @@ var Engine = (function(global) {
                  * 第二个和第三个分别是起始点的x和y坐标。我们用我们事先写好的资源管理工具来获取
                  * 我们需要的图片，这样我们可以享受缓存图片的好处，因为我们会反复的用到这些图片
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(Resources.get(rowImages[row]), col * TILE_WIDTH, row * TILE_HEIGHT);
             }
         }
 
@@ -168,8 +167,8 @@ var Engine = (function(global) {
      */
     function reset() {
         // 空操作
-        player.x = 202;
-        player.y = 83 * 5 - 20;
+        player.x = TILE_WIDTH * 2;
+        player.y = TILE_HEIGHT * 5 - 20;
     }
 
     /* 紧接着我们来加载我们知道的需要来绘制我们游戏关卡的图片。然后把 init 方法设置为回调函数。

@@ -1,14 +1,18 @@
+// 定义一些高度的常量
+var TILE_WIDTH = 101,
+    TILE_HEIGHT = 83;
+
 // 这是我们的玩家要躲避的敌人
-var Enemy = function(col,row) {
+var Enemy = function(col, row) {
     // 要应用到每个敌人的实例的变量写在这里
     // 我们已经提供了一个来帮助你实现更多
     // 根据输入的行与列来确定敌人的初始位置
-    this.x = 101 * col;
-    this.y = 83 * row - 20;
+    this.x = TILE_WIDTH * col;
+    this.y = TILE_HEIGHT * row - 20;
 
     // 随机给敌人一个速度值
     var _speed = [0.5, 1, 1.5, 2];
-    this.speed = _speed[Math.floor((Math.random()*_speed.length))];
+    this.speed = _speed[Math.floor((Math.random() * _speed.length))];
 
     // 敌人的图片或者雪碧图，用一个我们提供的工具函数来轻松的加载文件
     this.sprite = 'images/enemy-bug.png';
@@ -19,9 +23,9 @@ var Enemy = function(col,row) {
 Enemy.prototype.update = function(dt) {
     // 你应该给每一次的移动都乘以 dt 参数，以此来保证游戏在所有的电脑上
     // 都是以同样的速度运行的
-    this.x += 101 * dt * this.speed;
-    while (this.x > 505) {
-      this.x -= 505;
+    this.x += TILE_WIDTH * dt * this.speed;
+    while (this.x > TILE_WIDTH * 5) {
+        this.x -= TILE_WIDTH * 5;
     }
 };
 
@@ -34,8 +38,8 @@ Enemy.prototype.render = function() {
 // 这个类需要一个 update() 函数， render() 函数和一个 handleInput()函数
 var Char = function() {
     // 主人公初始位置
-    this.x = 202;
-    this.y = 83 * 5 - 20;
+    this.x = TILE_WIDTH;
+    this.y = TILE_HEIGHT * 5 - 20;
     this.sprite = 'images/char-princess-girl.png';
 };
 
@@ -50,24 +54,24 @@ Char.prototype.render = function() {
 
 Char.prototype.handleInput = function(keys) {
     if (keys === 'left') {
-      if (this.x > 0) {
-        this.update(-101, 0);
-      }
+        if (this.x > 0) {
+            this.update(-TILE_WIDTH, 0);
+        }
     }
     if (keys === 'right') {
-      if (this.x + 101 < 505) {
-        this.update(101, 0);
-      }
+        if (this.x + TILE_WIDTH < TILE_WIDTH * 5) {
+            this.update(TILE_WIDTH, 0);
+        }
     }
     if (keys === 'up') {
-      if (this.y > 0) {
-        this.update(0, -83);
-      }
+        if (this.y > 0) {
+            this.update(0, -TILE_HEIGHT);
+        }
     }
     if (keys === 'down') {
-      if (this.y + 101 < 83 * 5) {
-        this.update(0, 83);
-      }
+        if (this.y + TILE_HEIGHT < TILE_HEIGHT * 5) {
+            this.update(0, TILE_HEIGHT);
+        }
     }
 };
 
